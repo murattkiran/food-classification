@@ -197,6 +197,6 @@ for lr in [0.0001, 0.001, 0.01, 0.1]:
     print()
     print()
 ```
-![Learning Rate](images/learninrate.png)
+![Learning Rate](images/learningrate.png)
 - **best learning_rate = 0.001**
 
