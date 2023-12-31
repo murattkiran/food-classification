@@ -197,7 +197,7 @@ for lr in [0.0001, 0.001, 0.01, 0.1]:
 ![Learning Rate](images/learningrate.png)
 - **best learning_rate = 0.001**
 
-- `ModelCheckpoint` callback is used to save the best model during training.
+`ModelCheckpoint` callback is used to save the best model during training.
 ```python
 model.save_weights('model_v1.h5', save_format='h5')
 checkpoint = keras.callbacks.ModelCheckpoint(
