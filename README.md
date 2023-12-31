@@ -50,3 +50,11 @@ x = np.array(img)
 
 # Print the shape of the numpy array
 print("Image Shape:", x.shape)
+
+## 2. Pre-trained Convolutional Neural Networks
+
+In this section, pre-trained convolutional neural networks have been utilized for our food classification. The Keras applications offer different pre-trained models with various architectures. The model [Xception](https://keras.io/api/applications/xception/) has been employed for this project. This model takes an input image size of `(229, 229)` and scales each image pixel between `-1` and `1`.
+
+```python
+# Create an instance of the pre-trained Xception model
+model = Xception(weights='imagenet', input_shape=(229, 229, 3))
