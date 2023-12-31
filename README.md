@@ -59,3 +59,7 @@ In this section, pre-trained convolutional neural networks have been utilized fo
 ```python
 # Create an instance of the pre-trained Xception model
 model = Xception(weights='imagenet', input_shape=(229, 229, 3))
+```
+- Along with image size, the model also expects the `batch_size` which is the size of the batches of data (default 32). If one image is passed to the model, then the expected shape of the model should be (1, 229, 229, 3)
+- The image data was proprcessed using `preprocess_input` function, therefore, we'll have to use this function on our data to make predictions, like so: `X = preprocess_input(X)` kısmındaki we'll have to use ifadesini kaldırıp yerine edilgen ifade kullan. 
+- The `pred = model.predict(X)` function returns 2D array of shape `(1, 1000)`, where 1000 is the probablity of the image classes. `decode_predictions(pred)` can be used to get the class names and their probabilities in readable format.
