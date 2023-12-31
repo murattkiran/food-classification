@@ -184,9 +184,6 @@ def make_model(learning_rate=0.01):
 # Dictionary to store history with different learning rates
 scores = {}
 
-# List of learning rates
-scores = {}
-
 for lr in [0.0001, 0.001, 0.01, 0.1]:
     print(f"learning rate: {lr}")
 
@@ -200,3 +197,13 @@ for lr in [0.0001, 0.001, 0.01, 0.1]:
 ![Learning Rate](images/learningrate.png)
 - **best learning_rate = 0.001**
 
+- `ModelCheckpoint` callback is used to save the best model during training.
+```python
+model.save_weights('model_v1.h5', save_format='h5')
+checkpoint = keras.callbacks.ModelCheckpoint(
+    'xception_v1_{epoch:02d}_{val_accuracy:.3f}.h5',
+    save_best_only=True,
+    monitor='val_accuracy',
+    mode='max'
+)
+```
