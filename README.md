@@ -30,3 +30,23 @@ Additionally, the notebook [food-classification-model-training.ipynb](https://gi
 
 The dataset consists of sample images as shown below:
 ![Food Image 1](images/foodimage.png) ![Food Image 2](images/foodimage2.png)
+
+## Loading an Image
+
+You can use the following Python code to load an image from the dataset and convert it into a numpy array of a 3D shape. Each row of the array represents the values of the red, green, and blue color channels of one pixel in the image:
+
+```python
+import numpy as np
+from tensorflow.keras.preprocessing.image import load_img
+
+# Set the path, name, and full name of the image
+path = "./training/Dessert"
+name = "100.jpg"
+fullname = f"{path}/{name}"
+
+# Load the image and convert it into a numpy array
+img = load_img(fullname, target_size=(299, 299))
+x = np.array(img)
+
+# Print the shape of the numpy array
+print("Image Shape:", x.shape)
