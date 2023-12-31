@@ -72,3 +72,77 @@ decode_predictions(pred)
 - Along with image size, the model also expects the `batch_size` which is the size of the batches of data (default 32). If one image is passed to the model, then the expected shape of the model should be (1, 229, 229, 3)
 - The preprocess_input function was used on our data to make predictions, as shown in the statement: `X = preprocess_input(X)`
 - The `pred = model.predict(X)` function returns 2D array of shape `(1, 1000)`, where 1000 is the probablity of the image classes. `decode_predictions(pred)` can be used to get the class names and their probabilities in readable format.
+
+## 3. Transfer Learning
+
+Following are the steps to create train/validation data for model:
+
+```python
+# Build image generator for training (takes preprocessing input function)
+train_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
+
+# Load in train dataset into train generator
+train_ds = train_gen.flow_from_directory(directory=path/to/train_imgs_dir, # Train images directory
+                                         target_size=(150,150), # resize images to train faster
+                                         batch_size=32) # 32 images per batch
+
+# Create image generator for validation
+val_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
+
+# Load in image for validation
+val_ds = val_gen.flow_from_directory(directory=path/to/val_imgs_dir, # Validation image directory
+                                     target_size=(150,150),
+                                     batch_size=32,
+                                     shuffle=False) # False for validation
+```
+
+Following are the steps to build model from a pretrained model:
+
+```python
+# Build base model
+base_model = Xception(weights='imagenet',
+                      include_top=False, # to create custom dense layer
+                      input_shape=(150,150,3))
+
+# Freeze the convolutional base by preventing the weights being updated during training
+base_model.trainable = False
+
+# Define expected image shape as input
+inputs = keras.Input(shape=(150,150,3))
+
+# Feed inputs to the base model
+base = base_model(inputs, training=False) # set False because the model contains BatchNormalization layer
+
+# Convert matrices into vectors using pooling layer
+vectors = keras.layers.GlobalAveragePooling2D()(base)
+
+# Create dense layer of 10 classes
+outputs = keras.layers.Dense(10)(vectors)
+
+# Create model for training
+model = keras.Model(inputs, outputs)
+```
+Following are the steps to instantiate optimizer and loss function:
+
+```python
+# Define learning rate
+learning_rate = 0.01
+
+# Create optimizer
+optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
+
+# Define loss function
+loss = keras.losses.CategoricalCrossentropy(from_logits=True) # to keep the raw output of dense layer without applying softmax
+
+# Compile the model
+model.compile(optimizer=optimizer,
+              loss=loss,
+              metrics=['accuracy']) # evaluation metric accuracy
+```
+
+The model is ready to train once it is defined and compiled:
+
+```python
+# Train the model, validate it with validation data, and save the training history
+history = model.fit(train_ds, epochs=10, validation_data=val_ds)
+```
