@@ -62,13 +62,12 @@ model = Xception(weights='imagenet', input_shape=(229, 229, 3))
 ```
 ```python
 X = np.array([x])
-X.shape
-(1, 299, 299, 3)
+X.shape # Output: (1, 299, 299, 3)
 X = preprocess_input(X)
 pred = model.predict(X)
-pred.shape
-(1, 1000)
+pred.shape # Output: (1, 1000)
 decode_predictions(pred)
+
 ```
 - Along with image size, the model also expects the `batch_size` which is the size of the batches of data (default 32). If one image is passed to the model, then the expected shape of the model should be (1, 229, 229, 3)
 - The preprocess_input function was used on our data to make predictions, as shown in the statement: `X = preprocess_input(X)`
