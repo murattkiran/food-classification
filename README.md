@@ -82,7 +82,7 @@ Following are the steps to create train/validation data for model:
 train_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
 # Load in train dataset into train generator
-train_ds = train_gen.flow_from_directory(directory=path/to/train_imgs_dir, # Train images directory
+train_ds = train_gen.flow_from_directory('./training', # Train images directory
                                          target_size=(150,150), # resize images to train faster
                                          batch_size=32) # 32 images per batch
 
@@ -90,7 +90,7 @@ train_ds = train_gen.flow_from_directory(directory=path/to/train_imgs_dir, # Tra
 val_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
 # Load in image for validation
-val_ds = val_gen.flow_from_directory(directory=path/to/val_imgs_dir, # Validation image directory
+val_ds = val_gen.flow_from_directory('./validation', # Validation image directory
                                      target_size=(150,150),
                                      batch_size=32,
                                      shuffle=False) # False for validation
@@ -144,5 +144,5 @@ The model is ready to train once it is defined and compiled:
 
 ```python
 # Train the model, validate it with validation data, and save the training history
-history = model.fit(train_ds, epochs=10, validation_data=val_ds)
+history = model.fit(train_ds, epochs=15, validation_data=val_ds)
 ```
