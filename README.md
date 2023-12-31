@@ -116,8 +116,8 @@ base = base_model(inputs, training=False) # set False because the model contains
 # Convert matrices into vectors using pooling layer
 vectors = keras.layers.GlobalAveragePooling2D()(base)
 
-# Create dense layer of 10 classes
-outputs = keras.layers.Dense(10)(vectors)
+# Create dense layer of 11 classes
+outputs = keras.layers.Dense(11)(vectors)
 
 # Create model for training
 model = keras.Model(inputs, outputs)
@@ -146,3 +146,57 @@ The model is ready to train once it is defined and compiled:
 # Train the model, validate it with validation data, and save the training history
 history = model.fit(train_ds, epochs=15, validation_data=val_ds)
 ```
+
+## 4. Model Training and Tuning
+
+### Adjusting the learning rate
+
+```python
+# Function to create model
+def make_model(learning_rate=0.01):
+    base_model = Xception(weights='imagenet',
+                          include_top=False,
+                          input_shape=(150,150,3))
+
+    base_model.trainable = False
+    
+    #########################################
+    
+    inputs = keras.Input(shape=(150,150,3))
+    base = base_model(inputs, training=False)
+    vectors = keras.layers.GlobalAveragePooling2D()(base)
+    outputs = keras.layers.Dense(11)(vectors)
+    model = keras.Model(inputs, outputs)
+    
+    #########################################
+    
+    optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
+    loss = keras.losses.CategoricalCrossentropy(from_logits=True)
+
+    # Compile the model
+    model.compile(optimizer=optimizer,
+                  loss=loss,
+                  metrics=['accuracy'])
+    
+    return model
+```
+```python
+# Dictionary to store history with different learning rates
+scores = {}
+
+# List of learning rates
+scores = {}
+
+for lr in [0.0001, 0.001, 0.01, 0.1]:
+    print(f"learning rate: {lr}")
+
+    model = make_model(learning_rate=lr)
+    history = model.fit(train_ds, epochs=10, validation_data=val_ds)
+    scores[lr] = history.history
+
+    print()
+    print()
+```
+![Learning Rate](images/learninrate.png)
+- **best learning_rate = 0.001**
+
