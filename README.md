@@ -25,3 +25,9 @@ For more details and to access the dataset, you can visit [Dataset Resource](htt
 **Notes:**
 This project utilized [Saturn Cloud](https://saturncloud.io/) for efficient cloud-based computing.
 Additionally, the notebook [food-classification-model-training.ipynb](https://github.com/murattkiran/food-classification/blob/main/food-classification-model-training.ipynb) contains all the training processes for the food classification model.
+
+## 1. EDA (Exploratory Data Analysis)
+
+The dataset consists of sample images as shown below:
+
+![Food Image 1](images/foodimage.png) ![Food Image 2](images/foodimage2.png)
