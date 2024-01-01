@@ -319,3 +319,25 @@ history = model.fit(train_ds, epochs=50, validation_data=val_ds,
 ```
 ![Checkpoint](images/chck4.png)
 - best checkpoint = `xception_v4_48_0.886.h5`
+
+## 6. Using the Model
+
+- The saved model can be loaded and used for prediction with `keras.models.load_model(path/to/saved_model)` method.
+- The model performance can be evaluated on test data with `model.evaluate(test_ds)`.
+```python
+model = keras.models.load_model('xception_v4_48_0.886.h5')
+model.evaluate(test_ds)
+```
+- The prediction on the test image can be made using the method `model.predict(X)`.
+```python
+path = "./evaluation/Dessert/14.jpg"
+img = load_img(path, target_size=(299, 299))
+x = np.array(img) # converting img to numpy array
+X = np.array([x])
+X = preprocess_input(X)
+pred = model.predict(X)
+prediction_result = dict(zip(classes, pred[0]))
+max_class = max(prediction_result, key=prediction_result.get)
+print(f"The predicted class with the highest value: {max_class}") #The predicted class with the highest value: Dessert
+```
+**The prediction results of the model look quite successful.**
