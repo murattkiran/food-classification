@@ -477,3 +477,17 @@ docker push ${REMOTE_URI}
 ![awscontainer1](images/tag.png)
 ![awscontainer](images/create.png)
 
+* Let's go to test:
+![testevent](images/test.png)
+* Click Test
+Probably, it will fail with an error.
+![error](images/error.png)
+
+### Configuring it
+
+* To fix the error, we need to go to configuration and then general configuration and click edit and we need to increase timeout to 30 seconds. Then we also need to give it more memory.
+![timeout](images/timeout.png)
+![memory](images/memory.png)
+
+* Now, let's go to test again:
+![test2](images/test2.png)
