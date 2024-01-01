@@ -473,13 +473,15 @@ docker push ${REMOTE_URI}
 ### Creating the function
 
 * Let's now use it for our lambda function:
-  Select container image and give a name
+  
+Select container image and give a name
 ![awscontainer1](images/tag.png)
 ![awscontainer](images/create.png)
 
 * Let's go to test:
 ![testevent](images/test.png)
 * Click Test
+  
 Probably, it will fail with an error.
 ![error](images/error.png)
 
@@ -511,7 +513,7 @@ Probably, it will fail with an error.
 ![deployapi](images/deploy_api.png)
 * Click Deploy
   
-What happens now is that we have a URL that we can use for testing our API Gateway.
+**What happens now is that we have a URL that we can use for testing our API Gateway.**
 
 * Update your `test.py` file by appending '/predict' to the newly generated URL after deploying the AWS Lambda function through API Gateway
   
