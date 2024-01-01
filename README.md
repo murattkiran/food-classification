@@ -489,5 +489,33 @@ Probably, it will fail with an error.
 ![timeout](images/timeout.png)
 ![memory](images/memory.png)
 
+### Testing the function from the AWS Console
+
 * Now, let's go to test again:
 ![test2](images/test2.png)
+
+## 13. AWS API Gateway
+
+* Go to API Gateway
+* Click Create API
+* Select REST API and click Build
+* After creating API, create a resource
+* Create post method for lambda function.
+* Test:
+![apitest](images/api_test.png)
+![apitestresults](images/api_test_results.png)
+
+### Deploy API
+
+* Create a new stage and name it (eg: test)
+![deployapi](images/deploy_api.png)
+* Click Deploy
+What happens now is that we have a URL that we can use for testing our API Gateway.
+
+* Update your test.py file by appending '/predict' to the newly generated URL after deploying the AWS Lambda function through API Gateway
+  
+**Note:** The new file I created is named `test_aws_lambda.py`. After watching [this YouTube video](https://youtu.be/YdgIWTYQ69A?si=j1GYszrQ4jXHiOxE), I used the `dotenv` library to hide the URL generated after deployment.
+
+* Run python `test_aws_lambda.py`
+
+![deploytest](images/deploy_test.png)
