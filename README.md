@@ -470,3 +470,10 @@ docker push ${REMOTE_URI}
 * Now, we were able to push it successfully. Let's check it:
 ![awsecrimage](images/aws_ecr_image.png)
 
+### Creating the function
+
+* Let's now use it for our lambda function:
+  Select container image and give a name
+![awscontainer1](images/tag.png)
+![awscontainer](images/create.png)
+
