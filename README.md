@@ -350,3 +350,64 @@ print(f"The predicted class with the highest value: {max_class}") #The predicted
 * convert tensorflow keras model to a tensorflow lite model
 
 The conversion process from Keras to TF-Lite for the food classification model can be found in [tensorflow-model.ipynb](https://github.com/murattkiran/food-classification/blob/main/tensorflow-model.ipynb).
+
+## 8. Preparing the Code for Lambda (Moving the code from notebook to script and testing it locally)
+
+* Create `lambda_function.py`  for AWS Lambda
+* Test the lambda function
+* Open IPython in the terminal, import the `lambda_function`, and then use `lambda_function.predict("your url")` to make predictions. Replace "your url" with the URL you want to classify.
+![Lambda](images/lambdafnc.png)
+![Lambda2](images/lambdafnc2.png)
+![Lambda3](images/lambdafnc3.png)
+
+## 9. Web Service with Flask
+
+* Create a file named `predict_flask.py`
+* Open a terminal and run python `predict_flask.py` to start the server.
+* Open another terminal and run python `test_flask.py`. If it displays the class of food, it indicates that the model and server are functioning.
+* Use `Ctrl + c` to stop the server.
+
+## 10. Virtual Environment
+
+* To build a virtual environment, run `pip install pipenv`
+* Install required packages with `pipenv install numpy pandas flask requests matplotlib tensorflow keras tflite_runtime keras_image_helper python-dotenv`
+* Use `pipenv shell` to enter the virtual environment
+
+## 11. Preparing a Docker Image
+
+* Create a file named `Dockerfile` with the following content:
+```Dockerfile
+FROM public.ecr.aws/lambda/python:3.9
+
+RUN pip install keras-image-helper
+
+RUN pip install https://github.com/alexeygrigorev/tflite-aws-lambda/raw/main/tflite/tflite_runtime-2.7.0-cp39-cp39-linux_x86_64.whl
+
+COPY xception_v4_48_0.886.tflite .
+COPY lambda_function.py .
+
+CMD ["lambda_function.lambda_handler"]  
+```
+* Build the Docker image using the following command:
+```bash
+docker build -t your_image_name .
+```
+- Replace `your_image_name` with a name of your choice.
+
+* Now, we need to test it:
+```bash
+docker run -it --rm -p 8080:8080 your_image_name
+```
+* Now, let's test it:
+Create a file named `test.py`
+```python
+import requests
+
+url = 'http://localhost:8080/2015-03-31/functions/function/invocations'
+
+data = {'url': 'https://bit.ly/fried-food'}
+
+result = requests.post(url, json=data).json()
+print(result)
+```
+* Open a terminal and run python `test.py`
