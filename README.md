@@ -256,3 +256,66 @@ for droprate in [0.0, 0.2, 0.5, 0.8]:
 ```
 ![Drop Rate](images/droprate.png)
 - **I'm go with droprate = 0.5**
+
+### Data augmentation
+
+**How to choose augmentations?**
+
+- First step is to use our own judgement, for example, looking at the images (both on train and validation), does it make sense to introduce horizontal flip?
+- Look at the dataset, what kind of vairations are there? are objects always center?
+- Augmentations are hyperparameters: like many other hyperparameters, often times we need to test whether image augmentations are useful for the model or not. If the model doesn't improve or have same performance after certain epochs, in that case we don't use it.
+```python
+# Create image generator for train data and also augment the images
+train_gen = ImageDataGenerator(
+    preprocessing_function=preprocess_input,
+    shear_range=10,
+    zoom_range=0.1,
+    vertical_flip=True
+)
+
+train_ds = train_gen.flow_from_directory(
+    "./training",
+    target_size=(150, 150),
+    batch_size=32
+)
+
+val_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
+val_ds = val_gen.flow_from_directory(
+    "./validation",
+    target_size=(150, 150),
+    batch_size=32,
+    shuffle=False
+)
+```
+![Data Augmentation](images/augmentation.png)
+- **After the data augmentation process, no significant increase in accuracy values was observed. Therefore, there is no need for us to use the data augmentation process.**
+
+## 5. Training a Larger Model
+
+So far, all the experiments we conducted were carried out on a smaller model. The reason for this choice is that smaller models train faster, allowing us to iterate more quickly and experiment with different parameters. Now it's time to train a larger model with a size of `299x299`.
+```python
+checkpoint = keras.callbacks.ModelCheckpoint(
+    'xception_v4_{epoch:02d}_{val_accuracy:.3f}.h5',
+    save_best_only=True,
+    monitor='val_accuracy',
+    mode='max'
+)
+```
+```python
+learning_rate = 0.001
+size = 1000
+droprate = 0.5
+input_size = 299
+
+model = make_model(
+    input_size=input_size,
+    learning_rate=learning_rate,
+    size_inner=size,
+    droprate=droprate
+)
+
+history = model.fit(train_ds, epochs=50, validation_data=val_ds,
+                   callbacks=[checkpoint])
+```
+![Checkpoint](images/chck4.png)
+- best checkpoint = `xception_v4_48_0.886.h5`
