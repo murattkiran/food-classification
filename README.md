@@ -23,7 +23,7 @@ The dataset is divided into three splits: **evaluation, training, and validation
 For more details and to access the dataset, you can visit [Dataset Resource](https://www.kaggle.com/datasets/trolukovich/food11-image-dataset/data).
 
 **Notes:**
-This project utilized [Saturn Cloud](https://saturncloud.io/) for efficient cloud-based computing.
+I performed the model training processes of this project with [Saturn Cloud](https://saturncloud.io/).
 Additionally, the notebook [food-classification-model-training.ipynb](https://github.com/murattkiran/food-classification/blob/main/food-classification-model-training.ipynb) contains all the training processes for the food classification model.
 
 ## 1. EDA (Exploratory Data Analysis)
@@ -229,3 +229,30 @@ for size in [10, 100, 1000]:
 ```
 ![Inner Size](images/innersize.png)
 - **best size_inner = 1000** 
+
+### Regularization and dropout
+
+Add `droprate` parameter and `drop = keras.layers.Dropout(droprate)(inner)` to the make_model function.
+```python
+learning_rate = 0.001
+size = 1000
+
+scores = {}
+
+for droprate in [0.0, 0.2, 0.5, 0.8]:
+    print(f"droprate: {droprate}")
+
+    model = make_model(
+        learning_rate=learning_rate,
+        size_inner=size,
+        droprate=droprate
+    )
+    # Train for longer (epochs=30) cause of dropout regularization
+    history = model.fit(train_ds, epochs=30, validation_data=val_ds)
+    scores[droprate] = history.history
+
+    print()
+    print()
+```
+![Drop Rate](images/droprate.png)
+- **I'm go with droprate = 0.5**
