@@ -207,3 +207,25 @@ checkpoint = keras.callbacks.ModelCheckpoint(
     mode='max'
 )
 ```
+
+### Adding more layers
+
+Add `size_inner` parameter and `inner = keras.layers.Dense(size_inner, activation='relu')(vectors)` to the make_model function.
+Next, train the model with different sizes of inner layer:
+```python
+learning_rate = 0.001
+
+scores = {}
+
+for size in [10, 100, 1000]:
+    print(f"size: {size}")
+
+    model = make_model(learning_rate=learning_rate, size_inner=size)
+    history = model.fit(train_ds, epochs=10, validation_data=val_ds)
+    scores[size] = history.history
+
+    print()
+    print()
+```
+![Inner Size](images/innersize.png)
+- **best size_inner = 1000** 
