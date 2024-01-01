@@ -341,3 +341,12 @@ max_class = max(prediction_result, key=prediction_result.get)
 print(f"The predicted class with the highest value: {max_class}") #The predicted class with the highest value: Dessert
 ```
 **The prediction results of the model look quite successful.**
+
+## 7. Convert Keras to TF-Lite
+
+* tensorflow has a size of approximately 1.7 GB
+* there are size limits of cloud services and docker container
+* tensorflow lite is small in size and limited to using a model to make predictions (inference)
+* convert tensorflow keras model to a tensorflow lite model
+
+The conversion process from Keras to TF-Lite for the food classification model can be found in [tensorflow-model.ipynb](https://github.com/murattkiran/food-classification/blob/main/tensorflow-model.ipynb).
