@@ -427,6 +427,9 @@ aws ecr create-repository --repository-name food-classification-images
 This is the response I get:
 ![Repository](images/repository.png)
 
+We can refresh Amazon Elastic Container Registery page. We should be able to see it there.
+![awsecr](images/aws_ecr.png)
+
 * Log in to registry:
 ```python
 aws ecr get-login --no-include-email | sed 's/[0-9a-zA-Z=]\{20,\}/PASSWORD/g'
@@ -440,3 +443,30 @@ docker login -u AWS -p PASSWORD https://318268944894.dkr.ecr.eu-west-1.amazonaws
 $(aws ecr get-login --no-include-email)
 ```
 The output: `Login Succeeded`
+
+* Now, copy and paste the following commands into the terminal:
+```bash
+ACCOUNT=318268944894
+REGION=eu-west-1
+REGISTRY=food-classification-images
+PREFIX=${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/${REGISTRY}
+
+TAG=food-classification-model-xception-v4-001
+REMOTE_URI=${PREFIX}:${TAG}
+```
+* Run the image:
+```bash
+docker run -it --rm food-classification-model:latest
+```
+* Use `Ctrl + c` to stop.
+* Tag this image with the URI we just created:
+```bash
+docker tag food-classification-model:latest ${REMOTE_URI}
+```
+* Push to ECR:
+```bash
+docker push ${REMOTE_URI}
+```
+* Now, we were able to push it successfully. Let's check it:
+![awsecrimage](images/aws_ecr_image.png)
+
