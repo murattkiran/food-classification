@@ -411,3 +411,18 @@ result = requests.post(url, json=data).json()
 print(result)
 ```
 * Open a terminal and run python `test.py`
+
+## 12. Creating the Lambda Function
+
+### Publishing the image to AWS ECR
+```python
+# Open the command line
+# you can install awscli, if you dont have it 
+pip install awscli
+# if you are doing it for the first time you'll need to run `aws configure`
+aws configure
+# create image
+aws ecr create-repository --repository-name food-classification-images
+```
+This is the response I get:
+![Repository](images/repository.png)
