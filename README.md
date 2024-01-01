@@ -426,3 +426,17 @@ aws ecr create-repository --repository-name food-classification-images
 ```
 This is the response I get:
 ![Repository](images/repository.png)
+
+* Log in to registry:
+```python
+aws ecr get-login --no-include-email | sed 's/[0-9a-zA-Z=]\{20,\}/PASSWORD/g'
+```
+The output of this command:
+```bash
+docker login -u AWS -p PASSWORD https://318268944894.dkr.ecr.eu-west-1.amazonaws.com
+```
+* Then, take whatever this command returns and immediately execute it:
+```bash
+$(aws ecr get-login --no-include-email)
+```
+The output: `Login Succeeded`
